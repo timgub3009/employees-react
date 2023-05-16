@@ -1,0 +1,31 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid()) //айди с дефолтным значение от uuid 
+  email    String
+  password String
+  name     String
+  createdEmployee Employee[] //пользователь будет создавать сотрудника для себя, информация из модели Employee (будет ссылка на созданных этим юзером сотрудников)
+}
+
+model Employee {
+  id String @id @default(uuid())  // создается автоматически, айди сотрудника (индивидуальный)
+  firstName String 
+  lastName String
+  age String
+  address String
+  user User @relation(fields: [userId], references: [id]) //связь устанавливается с моделью User в поле - Employee добавляется поле UserId, которое берется в модели User. 
+  userId String //То есть у сотрудников, созданных одним юзером, это поле будет одинаковое. 
+}
+
+// если в схему вносятся изменения, надо обязательно прописать команду миграции и обновить призму
