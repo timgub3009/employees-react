@@ -86,4 +86,7 @@ const employee = async (req, res) => {
 module.exports = {
   all,
   add,
+  remove,
+  edit,
+  employee
 };
